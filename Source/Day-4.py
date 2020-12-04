@@ -51,7 +51,7 @@ for p in valid_passports:
         elif hgt[0][1] == 'in' and int(hgt[0][0]) >= 59 and int(hgt[0][0]) <= 76:
             hgt_valid = True
 
-    ecl = re.findall('ecl:(\w{3})\s', p)
+    ecl = re.findall('ecl:(\w+)\s', p)
     valid_eye_colours = ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']
     ecl_valid = False
     if len(ecl) > 0:
