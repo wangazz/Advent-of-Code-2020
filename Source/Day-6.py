@@ -1,6 +1,5 @@
 import numpy as np
 import os
-import re
 input_path = '../Inputs/Day-6.txt'
 fp = os.path.join(os.path.dirname(__file__), input_path)
 
