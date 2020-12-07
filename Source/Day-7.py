@@ -60,27 +60,29 @@ for i in inputs:
         inner_bags_list = []
         for bag in inner_bags:
             patterns = re.findall('^(\d+) (.*) bags?$', bag)
-            inner_bags_list.append((patterns[0][0], patterns[0][1]))
+            inner_bags_list.append((int(patterns[0][0]), patterns[0][1]))
 
         bags.append(outer)
         contents.append(inner_bags_list)
 
+bag_counter = 0
+target_contents = [(1, 'shiny gold')]
+new_target_contents = []
+
 while(True):
-    new_contents = []
-    for c in contents:
-        x = []
-        for bag in c:
-            if bag in bags:
-                inner_bags = contents[bags.index(bag)]
-                x.extend(inner_bags)
-            else:
-                x.append(bag)
-        new_contents.append(x)
-    if contents == new_contents:
+    new_target_contents = []
+    for c in target_contents:
+        multiplier = c[0]
+        target = c[1]
+
+        bag_counter += multiplier
+
+        if target in bags:
+            new_target_contents.extend([(c[0] * multiplier, c[1]) for c in contents[bags.index(target)]])
+
+    if new_target_contents == target_contents:
         break
     else:
-        contents = new_contents
+        target_contents = new_target_contents
 
-shiny_gold_contents = contents[bags.index('shiny gold')]
-distinct_contents = set(shiny_gold_contents)
-print(len(distinct_contents))
+print(bag_counter)
