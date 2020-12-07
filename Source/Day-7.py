@@ -19,7 +19,7 @@ for i in inputs:
         inner_bags_list = []
         for bag in inner_bags:
             patterns = re.findall('^\d+ (.*) bags?$', bag)
-            inner_bags_list.append(patterns[0][1])
+            inner_bags_list.append(patterns[0])
 
         bags.append(outer)
         contents.append(inner_bags_list)
@@ -65,7 +65,7 @@ for i in inputs:
         bags.append(outer)
         contents.append(inner_bags_list)
 
-bag_counter = 0
+bag_counter = -1 # ignore the shiny gold bag
 target_contents = [(1, 'shiny gold')]
 new_target_contents = []
 
