@@ -24,7 +24,7 @@ for i in inputs:
         bags.append(outer)
         contents.append(inner_bags_list)
 
-while(True):
+while True:
     new_contents = []
     for c in contents:
         x = []
@@ -69,7 +69,7 @@ bag_counter = -1 # ignore the shiny gold bag
 target_contents = [(1, 'shiny gold')]
 new_target_contents = []
 
-while(True):
+while True:
     new_target_contents = []
     for c in target_contents:
         multiplier = c[0]
