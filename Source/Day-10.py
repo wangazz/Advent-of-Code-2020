@@ -17,29 +17,44 @@ distribution = differences.count(1) * differences.count(3)
 print(distribution)
 
 # Part 2
-import itertools
-
 # If the difference between two values is 3, we must keep both values
 keep = [[0], *[[all_inputs[i], all_inputs[i + 1]] for i in range(len(differences)) if differences[i] == max_difference], [device]]
 flatten_keep = [i for l in keep for i in l]
-indices_to_keep = set([all_inputs.index(k) for k in flatten_keep])
-indices_to_arrange = set(range(input_length)).difference(indices_to_keep)
+indices_to_keep = sorted(set([all_inputs.index(k) for k in flatten_keep]))
 
-assert len(indices_to_keep) + len(indices_to_arrange) == input_length
+def maxGap(differences):
+    gap = 0
+    gaps = []
+    for d in differences:
+        if d != 3:
+            gap += 1
+        else:
+            gaps.append(gap)
+            gap = 0
+    return max(gaps)
 
-def maxDifference(sorted_iterable):
-    d = [sorted_iterable[i + 1] - sorted_iterable[i] for i in range(len(sorted_iterable) - 1)]
-    return max(d)
+print(differences.count(2))
+print(maxGap(differences))
 
-counter = 0
-arrangement_length = len(indices_to_arrange)
-for i in range(int(arrangement_length / 3) - 1, arrangement_length + 1):
-    combinations = itertools.combinations(indices_to_arrange, i)
-    for c in combinations:
-        combined_indices = tuple(indices_to_keep) + c
-        candidate_sequence = [all_inputs[index] for index in sorted(combined_indices)]
-        if candidate_sequence[0] == 0 and candidate_sequence[-1] == device:
-            if maxDifference(candidate_sequence) <= 3:
-                counter += 1
+# There are no gaps of 2 and the max consecutive gaps of 1 is 4
+# So, there can be 0, 1, 2 or 3 intermediate values between pairs of values with difference 3
+# If 0: pass
+# If 1: 2 valid states (present or not present)
+# If 2: 4 valid states (any combination of present or not present)
+# If 3: 7 valid states (any combination of present or not present, such that at least 1 is present)
 
-print(counter)
+valid_states = 1
+
+for i in range(len(indices_to_keep) - 1):
+    start = indices_to_keep[i]
+    end = indices_to_keep[i + 1]
+    input_slice = all_inputs[start:end]
+    intermediate_values = len(input_slice) - 1
+    if intermediate_values == 1:
+        valid_states *= 2
+    elif intermediate_values == 2:
+        valid_states *= 4
+    elif intermediate_values == 3:
+        valid_states *= 7
+
+print(valid_states)
