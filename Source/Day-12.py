@@ -42,17 +42,11 @@ for inst, arg in inputs:
     if inst == 'L':
         transforms = int(arg / 90)
         for t in range(transforms):
-            new_waypoint_y = waypoint_x
-            new_waypoint_x = -waypoint_y
-            waypoint_x = new_waypoint_x
-            waypoint_y = new_waypoint_y
+            waypoint_x, waypoint_y = -waypoint_y, waypoint_x
     elif inst == 'R':
         transforms = int(arg / 90)
         for t in range(transforms):
-            new_waypoint_x = waypoint_y
-            new_waypoint_y = -waypoint_x
-            waypoint_x = new_waypoint_x
-            waypoint_y = new_waypoint_y
+            waypoint_x, waypoint_y = waypoint_y, -waypoint_x
     elif inst == 'F':
         x += waypoint_x * arg
         y += waypoint_y * arg
