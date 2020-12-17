@@ -5,11 +5,21 @@ fp = os.path.join(os.path.dirname(__file__), input_path)
 with open(fp, 'r') as f:
     inputs = [line.strip() for line in f]
 
+cycles = 6
+
 def bounds(values):
     return (min(values) - 1, max(values) + 2)
 
+def inactive_coordinates(active_coordinates):
+    inactive_coordinates = []
+    for a in active_coordinates:
+        for n in neighbours(*a):
+            if n not in active_coordinates:
+                inactive_coordinates.append(n)
+    return list(set(inactive_coordinates))
+
 def neighbours(i, j, k, l = None):
-    if l:
+    if l != None:
         cube = [(x, y, z, w) for x in range(i - 1, i + 2) for y in range(j - 1, j + 2) for z in range(k - 1, k + 2) for w in range(l - 1, l + 2)]
         cube.remove((i, j, k, l))
         assert len(cube) == 80
@@ -18,8 +28,6 @@ def neighbours(i, j, k, l = None):
         cube.remove((i, j, k))
         assert len(cube) == 26
     return cube
-
-cycles = 6
 
 # Part 1: 3D
 active = []
@@ -30,11 +38,6 @@ for x, line in enumerate(inputs):
 
 next_active = active.copy()
 for cycle in range(cycles):
-    x_range, y_range, z_range = bounds([c[0] for c in active]), bounds([c[1] for c in active]), bounds([c[2] for c in active])
-    universe = [(x, y, z) for x in range(*x_range) for y in range(*y_range) for z in range(*z_range)]
-    inactive = [c for c in universe if c not in active]
-    assert len(active) + len(inactive) == len(universe)
-
     for a in active:
         active_neighbours = 0
         for n in neighbours(*a):
@@ -44,6 +47,7 @@ for cycle in range(cycles):
         if not (active_neighbours == 2 or active_neighbours == 3):
             next_active.remove(a)
 
+    inactive = inactive_coordinates(active)
     for i in inactive:
         active_neighbours = 0
         for n in neighbours(*i):
@@ -65,11 +69,6 @@ for x, line in enumerate(inputs):
 
 next_active = active.copy()
 for cycle in range(cycles):
-    x_range, y_range, z_range, w_range = bounds([c[0] for c in active]), bounds([c[1] for c in active]), bounds([c[2] for c in active]), bounds([c[3] for c in active])
-    universe = [(x, y, z, w) for x in range(*x_range) for y in range(*y_range) for z in range(*z_range) for w in range(*w_range)]
-    inactive = [c for c in universe if c not in active]
-    assert len(active) + len(inactive) == len(universe)
-
     for a in active:
         active_neighbours = 0
         for n in neighbours(*a):
@@ -79,6 +78,7 @@ for cycle in range(cycles):
         if not (active_neighbours == 2 or active_neighbours == 3):
             next_active.remove(a)
 
+    inactive = inactive_coordinates(active)
     for i in inactive:
         active_neighbours = 0
         for n in neighbours(*i):
