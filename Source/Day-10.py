@@ -33,9 +33,6 @@ def maxGap(differences):
             gap = 0
     return max(gaps)
 
-print(differences.count(2))
-print(maxGap(differences))
-
 # There are no gaps of 2 and the max consecutive gaps of 1 is 4
 # So, there can be 0, 1, 2 or 3 intermediate values between pairs of values with difference 3
 # If 0: pass
